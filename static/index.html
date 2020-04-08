@@ -33,6 +33,15 @@
       }
       button, a.button {
         padding: 8px 24px;
+        cursor: pointer;
+      }
+      a.button {
+        -webkit-appearance: button;
+        -moz-appearance: button;
+        appearance: button;
+
+        text-decoration: none;
+        /* color: initial; */
       }
       a {
         color: rgb(46, 112, 173);
@@ -163,14 +172,40 @@
         max-width: 600px;
         align-self: center;
         padding: 32px;
-        margin-bottom: 64px;
+        margin-bottom: 32px;
         margin-top: 48px;
       }
+      .early-access-request-form-container {
+        display: flex;
+        flex-direction: column;
+        max-width: 600px;
+        align-self: center;
+        padding: 32px;
+        margin-bottom: 32px;
+        margin-top: 48px;
+      }
+      .early-access-request {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        visibility: hidden;
+        max-height: 0;
+        transition: max-height 1s;
+      }
+      .early-access-request.early-access-request--show {
+        visibility: visible;
+        max-height: 2000px;
+      }
+
       p.lesser {
         font-size: 16px;
       }
       p.bigger {
         font-size: 22px;
+      }
+      p.yet-lesser {
+        font-size: 14px;
+        font-style: italic;
       }
       p.bluebox {
         border: 4px solid #9fc7f2;
@@ -178,9 +213,10 @@
         margin: 16px -36px;
       }
       .remark {
-        padding: 32px;
+        padding: 16px 32px;
         font-size: 16px;
         margin: 16px 0;
+        flex-grow: 1;
       }
       .remark.primary {
         color:rgb(27, 67, 110);
@@ -242,6 +278,7 @@
         align-items: center;
         background-color: rgb(47, 96, 137);
         padding: 32px;
+        line-height: 0; /* dirty hack to align inline images-as-links */
       }
       .footer-rightside a {
         color: white;
@@ -266,12 +303,28 @@
         color: white;
         background-color: rgb(71, 147, 219);
       }
-      .become-tester button {
+      .become-tester button, .become-tester a.button {
         border-color: rgb(116, 180, 239);
       }
-      .become-tester button:hover {
+      .become-tester button:hover, .become-tester a.button:hover {
         border-color: rgb(152, 204, 253);
       }
+
+      /* app-badges */
+      .app-badge {
+        width: 150px;
+      }
+      .app-badge.app-badge--appstore {
+
+      }
+      .app-badge.app-badge--google-play {
+
+      }
+      .app-badge.app-badge--f-droid {
+
+      }
+      /* cols */
+
       .cols {
         margin: 32px;
         display: flex;
@@ -281,6 +334,8 @@
         margin: 0 32px;
         display: flex;
         flex-direction: column;
+        flex-grow: 1;
+        align-items: flex-start;
       }
       .cols.cols--3 .cols__col {
         width: 33%;
@@ -292,7 +347,9 @@
       .cols__article {
         margin: 16px 0;
       }
+      .remark {
 
+      }
       /* egg */
 
       .egg-front-span-ru.egg-front-span-ru--face1 {
@@ -434,59 +491,77 @@
         <p class="bigger">
           Для того чтобы получить ранний доступ и попробовать приложение бесплатно, необходимо подать заявку и дождаться подтверждения или попробовать на публичном тестовом сервере прямо сейчас.
         </p>
-
-        <form class="early-access-request-form" style="display: none;">
-          <div class="form-line">
-            <label for="early-access-request-form-inn">ИНН</label>
-            <input type="number" required min="1000000000" max="999999999999" id="early-access-request-form-inn">
-          </div>
-          <div class="form-line">
-            <label for="early-access-request-form-org-name">Наименование предприятия</label>
-            <input type="text" id="early-access-request-form-org-name" required>
-          </div>
-          <div class="form-line">
-
-            <label for="early-access-request-form-approx-users">Примерное количество пользователей</label>
-            <select id="early-access-request-form-approx-users" required>
-              <option disabled selected value></option>
-              <option value="2">2 человека</option>
-              <option value="6">3-6 человек</option>
-              <option value="16">7-16 человек</option>
-              <option value="16">Более 16 человек</option>
-            </select>
-          </div>
-          <div class="form-line">
-
-            <label for="early-access-request-form-email">e-mail</label>
-            <input type="email" required id="early-access-request-form-email">
-          </div>
-          <div class="form-line">
-
-            <label for="early-access-request-form-submit"></label>
-            <button type="submit" id="early-access-request-form-submit">Отправить</button>
-          </div>
-
-        </form>
       </div>
       <div class="become-tester">
         <div class="cols cols--2">
           <div class="cols__col">
-            <div class="cols__article">
-              <h4>Закрытый тест</h4>
-              <div class="remark primary">Предпочтительный способ тестирования. Мы выделим вам <b>отдельный приватный сервер</b> в географически ближайшем от вас ДЦ. Со <b>стабильной полосой пропускания</b> и <b>закрытым доступом</b>.</div>
-              <button class="heroic-button primary">Подать заявку</button>
+            <h4>Закрытый тест</h4>
+            <div class="remark primary">
+              <div class="cols__article">
+                <p class="bigger">
+                  Предпочтительный способ тестирования, но нужно ждать обработку заявки. Мы выделим вам <b>отдельный приватный сервер</b> в географически ближайшем от вас ДЦ. Со <b>стабильной полосой пропускания</b> и <b>закрытым доступом</b>.
+                </p>
+                <p class="yet-lesser">
+                  Заявка обрабатывается в течение 12-48 часов.
+                </p>
+              </div>
             </div>
+            <button class="heroic-button primary early-access-request-show-form-button">Подать заявку</button>
           </div>
           <div class="cols__col">
-            <div class="cols__article">
-              <h4>Открытый тест</h4>
-              <div class="remark caution">Можно попробовать прямо сейчас. Но обратите внимание, что это - <b>открытый тестовый сервер</b>. Единственный на всех и <b>с ограниченой полосой</b>, который почти наверняка <b>будет работать ужасно</b>. <br/><br/>Для нормальной работы нужнен приватный сервер с выделенной полосой. Который можно тоже протестировать бесплатно - оформив <a href="#">заявку</a>.</div>
-              <button class="heroic-button caution">Попробовать на публичным тестовом сервере</button>
+
+            <h4>Открытый тест</h4>
+            <div class="remark caution">
+              <div class="cols__article">
+                <p class="bigger">
+                  Можно попробовать прямо сейчас. Но обратите внимание, что это - <b>открытый тестовый сервер</b>. Единственный на всех и <b>с ограниченой полосой</b>, который почти наверняка <b>будет работать нестабильно</b>.
+                </p>
+                <p class="yet-lesser">
+                  Для нормальной работы нужнен приватный сервер с выделенной полосой. Который можно тоже протестировать бесплатно - оформив <a href="#">заявку</a>.
+                </p>
+              </div>
             </div>
+            <a class="button heroic-button caution" href="https://alpha.free.dalenka.ru" target="_blank">Попробовать на публичным тестовом сервере</a>
           </div>
         </div>
       </div>
+      <div class="early-access-request">
+        <div class="early-access-request-form-container">
+          <h2>Заявка на создание учетной записи</h3>
+          <form class="early-access-request-form">
+            <div class="form-line">
+              <label for="early-access-request-form-inn">ИНН</label>
+              <input type="number" required min="1000000000" max="999999999999" id="early-access-request-form-inn">
+            </div>
+            <div class="form-line">
+              <label for="early-access-request-form-org-name">Наименование предприятия</label>
+              <input type="text" id="early-access-request-form-org-name" required>
+            </div>
+            <div class="form-line">
 
+              <label for="early-access-request-form-approx-users">Примерное количество пользователей</label>
+              <select id="early-access-request-form-approx-users" required>
+                <option disabled selected value></option>
+                <option value="2">2 человека</option>
+                <option value="6">3-6 человек</option>
+                <option value="16">7-16 человек</option>
+                <option value="16">Более 16 человек</option>
+              </select>
+            </div>
+            <div class="form-line">
+
+              <label for="early-access-request-form-email">E-mail для обратной связи</label>
+              <input type="email" required id="early-access-request-form-email">
+            </div>
+            <div class="form-line">
+
+              <label for="early-access-request-form-submit"></label>
+              <button class="primary" type="submit" id="early-access-request-form-submit">Отправить</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
       <div class="reqs">
         <h2>Технические требования</h2>
         <div class="cols cols--3">
@@ -523,11 +598,14 @@
             </div>
             <div class="cols__article">
               <h5>Android</h5>
-              Приложение в Google play market и F-Droid
+              Приложение в Google play market и F-Droid<br/>
+              <a href="https://play.google.com/store/apps/details?id=org.jitsi.meet"><img src="img/google-play-badge-300x89.png" class="app-badge app-badge--google-play"></a>
+              <a href="https://f-droid.org/en/packages/org.jitsi.meet/"><img src="img/f-droid-badge-300x89.png" class="app-badge app-badge--f-droid"></a>
             </div>
             <div class="cols__article">
               <h5>iOS</h5>
-              Приложение в AppStore
+              Приложение в AppStore<br/>
+              <a href="https://itunes.apple.com/us/app/jitsi-meet/id1165103905"><img src="img/appstore-badge-300x101.png" class="app-badge app-badge--appstore"></a>
             </div>
           </div>
         </div>
@@ -539,9 +617,9 @@
           <a href="sales@dalenka.ru">sales@dalenka.ru</a>
         </div>
         <div class="footer-rightside">
-          <div class="footer-rightside-link-div"><a href="#"><img src="img/github.svg" class="github-64"></a></div>
-          <div class="footer-rightside-link-div"><a href="#"><img src="img/anticovid.svg" class="anticovid-36"></a></div>
-          <div class="footer-rightside-link-div"><a href="#"><img src="img/jitsi.svg" class="jitsi-64"></a></div>
+          <div class="footer-rightside-link-div"><a href="https://github.com/dalenka" target="_blank"><img src="img/github.svg" class="github-64"></a></div>
+          <div class="footer-rightside-link-div"><a class="egg-footer-link" href="javascript:;"><img src="img/anticovid.svg" class="anticovid-36"></a></div>
+          <div class="footer-rightside-link-div"><a href="https://jitsi.org/" target="_blank"><img src="img/jitsi.svg" class="jitsi-64"></a></div>
         </div>
       </div>
     </div>
@@ -550,6 +628,15 @@
 
 
     const egg = new Egg();
+
+    const earlyAccessRequestDom = document.getElementsByClassName('early-access-request')[0];
+    const earlyAccessRequestShowFormButtonDom = document.getElementsByClassName('early-access-request-show-form-button')[0];
+    earlyAccessRequestShowFormButtonDom.onclick = () => {
+      earlyAccessRequestDom.classList.add('early-access-request--show');
+      earlyAccessRequestDom.scrollIntoView({
+        behavior: 'smooth'
+      });
+    }
 
   </script>
 </html>

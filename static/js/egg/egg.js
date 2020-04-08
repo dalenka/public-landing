@@ -69,22 +69,36 @@ class Egg {
     this.dom.сontinueButtonLink = document.getElementsByClassName('egg-bottomline-continue-button-link')[0];
     this.dom.sloganDiv = document.getElementsByClassName('egg-bottomline-slogan-div')[0];
     this.dom.sloganTogetherSpan = document.getElementsByClassName('egg-bottomline-slogan-together-span')[0];
+
     this.dom.backview = document.getElementsByClassName('hero__backview')[0];
+
+    this.dom.footerLink = document.getElementsByClassName('egg-footer-link')[0];
+
     this.isShine = false;
 
     this.backview = new Backview(this.dom.backview);
-    this.dom.face1u.onclick = () => {
+    const startCb = () => {
       this.runStorylinePart1();
       this.dom.face1u.onclick = null;
       this.dom.face1u.removeAttribute("href");
       this.dom.face1u.classList.add('egg-front-span-ru__u--face1--runned-once');
-      return false;
+      this.dom.footerLink.onclick = null;
+      this.dom.footerLink.removeAttribute("href");
     }
-    this.dom.сontinueButtonLink.onclick = () => {
+    const startWithScrollAndPauseCb = async () => {
+      window.scrollTo({top: 0, behavior: 'smooth'});
+      await pause(2000);
+      startCb();
+    }
+    const continueCb = () => {
       this.runStorylinePart2();
       // no need to hide/disable link, because whole div will be hidden,
     }
+    this.dom.face1u.onclick = startCb;
+    this.dom.footerLink.onclick = startWithScrollAndPauseCb;
+    this.dom.сontinueButtonLink.onclick = continueCb;
   }
+
   async runStorylinePart1 () {
     await this.run12ConnectionStoryline();
   }
