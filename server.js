@@ -7,8 +7,8 @@ const https = require('https');
 
 //// Get port from environment and store in Express.
 
-const httpPort = parseInt(process.env.PORT, 10) || 80;
-const httpsPort = parseInt(process.env.PORT, 10) || 7777;
+const httpPort = parseInt(process.env.PORT, 10) || 87;
+const httpsPort = parseInt(process.env.PORT, 10) || 8777;
 app.set('port', httpsPort);
 
 //// Create HTTP/HTTPS server.
