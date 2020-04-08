@@ -1,2 +1,2 @@
  forever stop server.js
- forever start -l public-landing-server.log -a -o out.log -e err.log server.js
+ forever start -l /var/log/dalenka/public-landing-server.forever.log -a -o /var/log/dalenka/public-landing-server.out.log -e /var/log/dalenka/public-landing-server.error.log server.js
