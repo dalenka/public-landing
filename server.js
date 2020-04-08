@@ -3,28 +3,40 @@
 //// Module dependencies.
 const app = require('./app');
 const http = require('http');
+const https = require('https');
 
 //// Get port from environment and store in Express.
 
-const port = parseInt(process.env.PORT, 10) || 80;
-app.set('port', port);
+const httpPort = parseInt(process.env.PORT, 10) || 80;
+const httpsPort = parseInt(process.env.PORT, 10) || 7777;
+app.set('port', httpsPort);
 
-//// Create HTTP server.
+//// Create HTTPS server.
+const fs = require('fs');
 
-const server = http.createServer(app);
+const options = {
+  key: fs.readFileSync('cert/key.pem'),
+  cert: fs.readFileSync('cert/cert.pem')
+};
+const httpServer = https.createServer(app);
+const httpsServer = https.createServer(options, app);
 
 //// Listen on provided port, on all network interfaces.
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+// httpServer.listen(httpPort);
+// httpServer.on('error', onError);
+// httpServer.on('listening', onListening);
+
+httpsServer.listen(httpsPort);
+httpsServer.on('error', onError);
+httpsServer.on('listening', onListening);
 //// Used in logging
 
-const bindName = (typeof port === 'string')
-  ? 'pipe ' + port
-  : 'port ' + port;
+const bindName = (typeof httpsPort === 'string')
+  ? 'pipe ' + httpsPort
+  : 'port ' + httpsPort;
 
-//// Event listener for HTTP server "error" event.
+//// Event listener for HTTPS server "error" event.
 
 function onError(error) {
   if (error.syscall !== 'listen') {
@@ -46,9 +58,9 @@ function onError(error) {
   }
 }
 
-//// Event listener for HTTP server "listening" event.
+//// Event listener for HTTPS server "listening" event.
 
 function onListening() {
-  const addr = server.address().address;
+  const addr = httpsServer.address().address;
   console.log('Listening ' + bindName + ' on ' + addr);
 }
