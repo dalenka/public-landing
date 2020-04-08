@@ -1,12 +1,15 @@
 'use strict';
 const path = require('path');
 const express = require('express');
+const es6Renderer = require('express-es6-template-engine');
 const router = require('./router.js');
 const app = express();
 
 // view engine setup
 
-//app.set('view engine', 'html');
+app.engine('html', es6Renderer);
+app.set('views', 'views');
+app.set('view engine', 'html');
 app.use('/', router); // To be used later, now empty bloilerplate
 app.use(express.static(path.join(__dirname, 'static')));
 
@@ -25,7 +28,7 @@ app.use(function(err, req, res, next) {
   //res.locals.error = err;
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', {locals: res.locals});
   //throw err;
 });
 
