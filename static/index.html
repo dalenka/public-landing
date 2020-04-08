@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      u.dalenka.ru — групповые видеозвонки в России через выделенные сервера
+    </title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700,900&display=swap&subset=cyrillic" rel="stylesheet">
+    <script src="/js/egg/faceChanger.js"></script>
+    <script src="/js/egg/backview.js"></script>
+    <script src="/js/egg/charflow.js"></script>
+    <script src="/js/egg/egg.js"></script>
+    <style>
+      /* @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700,900&display=swap&subset=cyrillic'); */
+      /* now in link href mode, maybe revert */
+      body {
+        margin: 0;
+      }
+      body, p {
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      body, input, button, a.button, select, textarea {
+        font-family: Roboto;
+      }
+      input, button, a.button, select, textarea {
+        font-size: 16px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #ddd;
+        padding: 8px;
+        box-sizing: border-box;
+        min-height: 40px;
+      }
+      button, a.button {
+        padding: 8px 24px;
+      }
+      a {
+        color: rgb(46, 112, 173);
+      }
+      a:hover {
+        color: rgb(15, 123, 224);
+      }
+      h1 {
+        font-weight: 300;
+        font-size: 50px;
+      }
+      h2 {
+        font-weight: 300;
+        font-size: 44px;
+        text-align: center;
+      }
+      h3 {
+        font-weight: 400;
+        font-size: 26px;
+      }
+      h4 {
+        font-weight: 700;
+        font-size: 24px;
+      }
+      h5 {
+        font-weight: 900;
+        font-size: 16px;
+      }
+      h6 {
+        font-weight: 700;
+        font-size: 14px;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        margin: 0;
+      }
+      button.primary, a.button.primary {
+        background: linear-gradient(transparent, rgb(27, 67, 110));
+        background-color: rgb(32, 89, 151);
+        color: rgb(255, 255, 255);
+        transition: background-color 0.7s, border-color 0.7s;
+      }
+      button.primary:hover, a.button.primary:hover {
+        background-color: rgb(43, 123, 207);
+        transition: background-color 0.2s, border-color 0.2s;
+      }
+      button.primary:active, a.button.primary:active {
+        background-color: rgb(9, 41, 75);
+        transition: background-color 0.1s, border-color 0.1s;
+      }
+
+      button.caution, a.button.caution {
+        background: linear-gradient(transparent, rgb(110, 27, 27));
+      background-color: rgba(159, 37, 69);
+        color: rgb(255, 255, 255);
+        transition: background-color 0.7s;
+      }
+      button.caution:hover, a.button.caution:hover {
+        background-color: rgb(194, 53, 53);
+        transition: background-color 0.2s;
+      }
+      button.caution:active, a.button.caution:active {
+        background-color: rgb(75, 9, 9);
+        transition: background-color 0.1s;
+      }
+
+      .form-line {
+        display: flex;
+        flex-direction: column;
+        margin: 16px 0;
+      }
+
+      .root {
+        display: flex;
+        flex-direction: column;
+      }
+      .hero {
+        display: flex;
+        flex-direction: column;
+
+        position: relative;
+        overflow: hidden;
+
+        background: radial-gradient(transparent, rgba(0, 78, 130, 1)), linear-gradient(0, transparent, rgb(46, 112, 173));
+        background-color: rgb(46, 112, 173);
+
+        background-size: 500% 500%, 100% 100%;
+        background-position: center, center;
+      }
+      .hero__content {
+        position: relative;
+        /* for hero__backview */
+
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        padding: 48px 32px;
+      }
+      .hero__top-text, .hero__bottom-text {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+      }
+      .hero__logo {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        /* margin: 32px; */
+      }
+
+      .hero__logo {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 70px;
+        line-height: 50px;
+        margin: -80px 0;
+      }
+
+
+      .main {
+        display: flex;
+        flex-direction: column;
+        max-width: 600px;
+        align-self: center;
+        padding: 32px;
+        margin-bottom: 64px;
+        margin-top: 48px;
+      }
+      p.lesser {
+        font-size: 16px;
+      }
+      p.bigger {
+        font-size: 22px;
+      }
+      p.bluebox {
+        border: 4px solid #9fc7f2;
+        padding: 32px;
+        margin: 16px -36px;
+      }
+      .remark {
+        padding: 32px;
+        font-size: 16px;
+        margin: 16px 0;
+      }
+      .remark.primary {
+        color:rgb(27, 67, 110);
+        background-color: rgb(233, 244, 255);
+      }
+      .remark.caution {
+        color:rgb(110, 27, 27);
+        background-color: rgb(240, 240, 240);
+      }
+      .early-access-request-form {
+        display: flex;
+        flex-direction: column;
+      }
+      .early-access-request-form input, .early-access-request-form select, .early-access-request-form button {
+
+      }
+      .hero__stripe {
+        background: rgb(158, 0, 0);
+        height: 6px;
+      }
+      img.jitsi-64, img.github-64 {
+        width: 64px;
+        height: 32px;
+      }
+      img.anticovid-36 {
+        width: 36px;
+        height: 36px;
+      }
+      img.jitsi-64.jitsi-64--inline {
+        margin: -16px 0;
+        vertical-align: 6px;
+      }
+      .footer {
+        display: flex;
+        flex-direction: row;
+      }
+      .footer-leftside {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-grow: 1;
+        padding: 32px;
+        /* background-color: rgb(238, 238, 238);
+        color: rgb(120, 132, 151); */
+
+        background-color: rgb(21, 70, 100);
+        color: white;
+        border-left: 4px solid rgb(146, 15, 15);
+      }
+      .footer-leftside a {
+        color: rgb(153, 206, 255);
+      }
+      .footer-leftside a:hover {
+        color: rgb(187, 222, 255);
+      }
+      .footer-rightside {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background-color: rgb(47, 96, 137);
+        padding: 32px;
+      }
+      .footer-rightside a {
+        color: white;
+        opacity: 0.2;
+        transition: opacity 1s;
+      }
+      .footer-rightside a:hover {
+        opacity: 1;
+        transition: opacity 0.3s;
+
+      }
+
+      .footer-rightside-link-div {
+        margin: 0 16px;
+      }
+      .reqs {
+        background: #e9e9e9;
+        padding-bottom: 80px;
+        padding-top: 64px;
+      }
+      .become-tester {
+        color: white;
+        background-color: rgb(71, 147, 219);
+      }
+      .become-tester button {
+        border-color: rgb(116, 180, 239);
+      }
+      .become-tester button:hover {
+        border-color: rgb(152, 204, 253);
+      }
+      .cols {
+        margin: 32px;
+        display: flex;
+        flex-direction: row;
+      }
+      .cols .cols__col {
+        margin: 0 32px;
+        display: flex;
+        flex-direction: column;
+      }
+      .cols.cols--3 .cols__col {
+        width: 33%;
+      }
+      .cols.cols--2 .cols__col {
+        width: 50%;
+      }
+
+      .cols__article {
+        margin: 16px 0;
+      }
+
+      /* egg */
+
+      .egg-front-span-ru.egg-front-span-ru--face1 {
+        opacity: 1;
+      }
+      .egg-front-span-extra-u, .egg-front-span-extra-ru, .egg-front-span-colon, .egg-front-span-dots {
+        opacity: 0.3;
+      }
+      .egg-front-span-bracket {
+        opacity: 0.15;
+        transition: opacity 20s;
+      }
+      a.egg-front-span-ru__u.egg-front-span-ru__u--face1 {
+        color: white;
+        text-decoration: none;
+      }
+
+      a.egg-front-span-ru__u.egg-front-span-ru__u--face1:hover {
+        text-shadow: 0 0 24px white, 0 0 24px white;
+      }
+
+      /* revert to no-hover when --runned-once */
+      a.egg-front-span-ru__u.egg-front-span-ru__u--face1.egg-front-span-ru__u--face1--runned-once:hover {
+        text-shadow: none;
+      }
+
+      a.egg-bottomline-continue-button-link {
+        opacity: 0;
+        transition: opacity 1s;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+      }
+      a.egg-bottomline-continue-button-link:hover {
+        color: white;
+      }
+
+      .egg-bottomline-slogan-div {
+        opacity: 0;
+        transition: opacity 10s;
+      }
+
+      .hero.hero--egg-distance .hero__logo {
+        margin: 0;
+        transition: margin 0.2s;
+      }
+
+      .hero.hero--egg-wake {
+        background-color: rgb(11, 90, 194);
+        transition: background-color 2s;
+      }
+
+      .hero.hero--egg-shine {
+        background-color: rgb(0, 82, 206);
+        transition: background-color 0.75s, background-size 0.75s;
+        background-size: 100% 100%, 100% 100%;
+      }
+
+      .hero__backview {
+        position: absolute;
+        width: 100%;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 32px;
+        opacity: 0;
+        color: #fff;
+        text-align: center;
+        white-space: pre-wrap;
+      }
+      .hero.hero--egg-wake .hero__backview, .hero.hero--egg-shine .hero__backview {
+        animation: upDown 15s alternate infinite ease-in-out;
+        opacity: 0.1;
+        transition: opacity 2s;
+      }
+      @keyframes upDown {
+        to { transform: translatey(-500px);}
+      }
+
+      .backview-span-nowrap {
+        white-space: nowrap;
+      }
+
+
+
+
+
+
+
+    </style>
+  </head>
+  <body>
+    <div class="root">
+      <div class="hero">
+        <div class="hero__backview"></div>
+        <div class="hero__content">
+          <div class="hero__top-text">
+            <span><span class="egg-topline-bracket egg-topline-bracket--pre" style="display: none;">[</span> Групповые видеоконференции <span class="egg-topline-bracket egg-topline-bracket--post" style="display: none;">]</span></span>
+          </div>
+          <div class="hero__logo">
+            <span class="egg-front-span">
+              <span class="egg-front-span-spacer">&nbsp;</span>
+              <br/>
+              <span class="egg-front-span-spacer egg-front-span-spacer--face4">&nbsp;</span><span class="egg-front-span-dots egg-front-span-dots--face4"></span><span class="egg-front-span-bracket egg-front-span-bracket--pre egg-front-span-bracket--face4" style="display: none;">[</span><span class="egg-front-span-ru egg-front-span-ru--face4" style="display: none;">ru</span><span class="egg-front-span-bracket egg-front-span-bracket--post egg-front-span-bracket--face4" style="display: none;">]</span>
+              <br/>
+              <span class="egg-front-span-spacer">&nbsp;&nbsp;</span><span class="egg-front-span-colon egg-front-span-colon--face4"></span>
+              <br/>
+              <span class="egg-front-span-bracket egg-front-span-bracket--pre egg-front-span-bracket--face1" style="display: none;">[</span><span class="egg-front-span-ru egg-front-span-ru--face1"><span class="egg-front-span-ru__r egg-front-span-ru__r--face1" style="display: none;">r</span><a href="javascript:;" class="egg-front-span-ru__u egg-front-span-ru__u--face1">u</a></span><span class="egg-front-span-bracket egg-front-span-bracket--post egg-front-span-bracket--face1" style="display: none;">]</span><span class="egg-front-span-dots egg-front-span-dots--face1 egg-front-span-dots--base">.</span><span class="egg-front-span-extra-u"></span><span class="egg-front-span-dots egg-front-span-dots--face1 egg-front-span-dots--extra"></span><span class="egg-front-span-dalenka">dalenka</span><span class="egg-front-span-dots egg-front-span-dots--face2 egg-front-span-dots--base">.</span><span class="egg-front-span-extra-ru"></span><span class="egg-front-span-dots egg-front-span-dots--face2 egg-front-span-dots--extra"></span><span class="egg-front-span-bracket egg-front-span-bracket--pre egg-front-span-bracket--face2" style="display: none;">[</span><span class="egg-front-span-ru egg-front-span-ru--face2">ru</span><span class="egg-front-span-bracket egg-front-span-bracket--post egg-front-span-bracket--face2" style="display: none;">]</span>
+              <br/>
+              <span class="egg-front-span-colon egg-front-span-colon--face3"></span><span class="egg-front-span-spacer egg-front-span-spacer--face5 egg-front-span-spacer--1">&nbsp;&nbsp;</span><span class="egg-front-span-colon egg-front-span-colon--face5 egg-front-span-colon--1"></span>
+              <br/>
+              <span class="egg-front-span-bracket egg-front-span-bracket--pre egg-front-span-bracket--face3" style="display: none;">[</span><span class="egg-front-span-ru egg-front-span-ru--face3" style="display: none;">ru</span><span class="egg-front-span-bracket egg-front-span-bracket--post egg-front-span-bracket--face3" style="display: none;">]</span><span class="egg-front-span-dots egg-front-span-dots--face3"></span><span class="egg-front-span-spacer egg-front-span-spacer--face3 egg-front-span-spacer--face5 egg-front-span-spacer--2">&nbsp;</span><span class="egg-front-span-dots egg-front-span-dots--face5"></span>
+              <br/>
+              <span class="egg-front-span-spacer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="egg-front-span-colon egg-front-span-colon--face5 egg-front-span-colon--2"></span>
+            </span>
+          </div>
+          <div class="hero__bottom-text egg-bottomline-respect-div">
+            <span>На технологии <img src="img/jitsi.svg" class="jitsi-64 jitsi-64--inline"></span>
+          </div>
+          <div class="hero__bottom-text egg-bottomline-continue-button-div" style="display: none;">
+            <span><span class="egg-bottomline-bracket egg-bottomline-bracket--pre"  style="display: none;">[</span> <a class="egg-bottomline-continue-button-link" href="javascript:;">нажмите, чтобы продолжить </a> <span class="egg-bottomline-bracket egg-bottomline-bracket--post"  style="display: none;">]</span></span>
+          </div>
+          <div class="hero__bottom-text egg-bottomline-slogan-div" style="display: none;">
+            <span>Чтобы мы могли продолжать работать<span class="egg-bottomline-slogan-together-span"></span></span>
+          </div>
+        </div>
+        <div class="hero__stripe"></div>
+      </div>
+      <div class="main">
+        <p class="lesser">
+          Мы, комманда програмистов из Сибири, как и многие столкнулись с тем, что сейчас на территории России Skype For Business, Zoom и другие средства для групповых видеоконференций работают не всегда удовлетворительно.
+        </p>
+        <p class="lesser">
+          Появилась идея.
+        </p>
+        <p class="bigger bluebox">
+          Мы взяли самое <b>проверенное и защищеное</b> open-source решение для коллективной видеосвязи, развернули выделенные мощные сервера на различных площадках на территории России, чтобы быть в непосредсвенной близости — чтобы <b>уменьшить задержку</b> сигнала и предоставить максимально допустимое технологией WebRTC <b>качество трансляции</b>.
+        </p>
+        <p class="lesser">
+          И предлагаем компаниям РФ (а особенно Свердловская область, Новосибирская обрасть, Красноярский край, Томская область, Хабаровский край - там где у нас есть прямая связь с городскими пиринговыми сетями) воспользоваться развернутой нами платформой. Пока мы всё тестируем и отлаживаем, до 11 апреля 2020 действует закрытый бесплатный пробный режим.
+        </p>
+        <p class="bigger">
+          Для того чтобы получить ранний доступ и попробовать приложение бесплатно, необходимо подать заявку и дождаться подтверждения или попробовать на публичном тестовом сервере прямо сейчас.
+        </p>
+
+        <form class="early-access-request-form" style="display: none;">
+          <div class="form-line">
+            <label for="early-access-request-form-inn">ИНН</label>
+            <input type="number" required min="1000000000" max="999999999999" id="early-access-request-form-inn">
+          </div>
+          <div class="form-line">
+            <label for="early-access-request-form-org-name">Наименование предприятия</label>
+            <input type="text" id="early-access-request-form-org-name" required>
+          </div>
+          <div class="form-line">
+
+            <label for="early-access-request-form-approx-users">Примерное количество пользователей</label>
+            <select id="early-access-request-form-approx-users" required>
+              <option disabled selected value></option>
+              <option value="2">2 человека</option>
+              <option value="6">3-6 человек</option>
+              <option value="16">7-16 человек</option>
+              <option value="16">Более 16 человек</option>
+            </select>
+          </div>
+          <div class="form-line">
+
+            <label for="early-access-request-form-email">e-mail</label>
+            <input type="email" required id="early-access-request-form-email">
+          </div>
+          <div class="form-line">
+
+            <label for="early-access-request-form-submit"></label>
+            <button type="submit" id="early-access-request-form-submit">Отправить</button>
+          </div>
+
+        </form>
+      </div>
+      <div class="become-tester">
+        <div class="cols cols--2">
+          <div class="cols__col">
+            <div class="cols__article">
+              <h4>Закрытый тест</h4>
+              <div class="remark primary">Предпочтительный способ тестирования. Мы выделим вам <b>отдельный приватный сервер</b> в географически ближайшем от вас ДЦ. Со <b>стабильной полосой пропускания</b> и <b>закрытым доступом</b>.</div>
+              <button class="heroic-button primary">Подать заявку</button>
+            </div>
+          </div>
+          <div class="cols__col">
+            <div class="cols__article">
+              <h4>Открытый тест</h4>
+              <div class="remark caution">Можно попробовать прямо сейчас. Но обратите внимание, что это - <b>открытый тестовый сервер</b>. Единственный на всех и <b>с ограниченой полосой</b>, который почти наверняка <b>будет работать ужасно</b>. <br/><br/>Для нормальной работы нужнен приватный сервер с выделенной полосой. Который можно тоже протестировать бесплатно - оформив <a href="#">заявку</a>.</div>
+              <button class="heroic-button caution">Попробовать на публичным тестовом сервере</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reqs">
+        <h2>Технические требования</h2>
+        <div class="cols cols--3">
+          <div class="cols__col">
+            <h3>Сеть</h3>
+            <div class="cols__article">
+              Для видеозвонков важным является не "скорость в мегабитах" или "ширина канала", её может хватить и пол-мегабита! Важны <b>стабильность соединения</b> и временны́е задержки.
+              3G и 4G редко обладают такими качествами в регионах, но может и повезти. Крайне желательно иметь проводное подключение и стабильный wi-fi.
+
+              Не стоит ориентироваться на стабильность работы таких сервисов как youtube, как на признак хорошего качества соединения — youtube может буферизовывать видео.
+            </div>
+          </div>
+          <div class="cols__col">
+            <h3>Производительность</h3>
+            <div class="cols__article">
+              <h5>ПК</h5>
+              Потребуется более-менее производительный компьютер. Ничего сверхъестественного: условные два ядра, два гигабайта памяти. Современный офисный компьютер должен без труда справиться, но что-то совсем древнее - может банально "не потянуть". Декодирование нескольких видеопотоков требует в разы больше ресурсов, чем, например, проигрывание видео с youtube.
+            </div>
+            <div class="cols__article">
+              <h5>Android</h5>
+              Стоит проверить поддержку устройства вручную.
+            </div>
+            <div class="cols__article">
+              <h5>iOS</h5>
+              Все устройства, обновляемые до последней версии iOS - работают. Работоспособность на старых устройствах уточняется.
+            </div>
+          </div>
+          <div class="cols__col">
+            <h3>Платформа</h3>
+            <div class="cols__article">
+              <h5>Windows / macOS / Linux</h5>
+              Веб приложение в Google Chrome / Chromium. Использование других браузеров не рекомендуется, а Mozilla Firefox и вовсе запрещено (до исправления бага с поддержкой webRTC). Мы всё очень любим Firefox! Но пока придется посидеть на Chrome.
+              Работоспособность приложения в Safari для macOS исследуется, но в данный момент рекомендуемым браузером является Chrome для macOS.
+            </div>
+            <div class="cols__article">
+              <h5>Android</h5>
+              Приложение в Google play market и F-Droid
+            </div>
+            <div class="cols__article">
+              <h5>iOS</h5>
+              Приложение в AppStore
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="footer-leftside">
+          Константин Баркалов, ИП<br/>
+          ИНН 24600033322212, ОГРН 234234234234<br/>
+          <a href="sales@dalenka.ru">sales@dalenka.ru</a>
+        </div>
+        <div class="footer-rightside">
+          <div class="footer-rightside-link-div"><a href="#"><img src="img/github.svg" class="github-64"></a></div>
+          <div class="footer-rightside-link-div"><a href="#"><img src="img/anticovid.svg" class="anticovid-36"></a></div>
+          <div class="footer-rightside-link-div"><a href="#"><img src="img/jitsi.svg" class="jitsi-64"></a></div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+
+
+    const egg = new Egg();
+
+  </script>
+</html>
