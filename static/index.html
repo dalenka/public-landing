@@ -9,6 +9,8 @@
     <script src="/js/egg/backview.js"></script>
     <script src="/js/egg/charflow.js"></script>
     <script src="/js/egg/egg.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LdCz-cUAAAAALA91LtBZNI8CJYGwGvMa2hUBMgb"></script>
+
     <style>
       /* @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700,900&display=swap&subset=cyrillic'); */
       /* now in link href mode, maybe revert */
@@ -528,19 +530,20 @@
       <div class="early-access-request">
         <div class="early-access-request-form-container">
           <h2>Заявка на создание учетной записи</h3>
-          <form class="early-access-request-form">
+          <form class="early-access-request-form" action="/api/early-access-request" method="POST">
+            <input name="recapchaToken" type="hidden" id="recapcha-token">
             <div class="form-line">
               <label for="early-access-request-form-inn">ИНН</label>
-              <input type="number" required min="1000000000" max="999999999999" id="early-access-request-form-inn">
+              <input name="inn" type="number" required min="1000000000" max="999999999999" id="early-access-request-form-inn">
             </div>
             <div class="form-line">
               <label for="early-access-request-form-org-name">Наименование предприятия</label>
-              <input type="text" id="early-access-request-form-org-name" required>
+              <input name="orgName" type="text" id="early-access-request-form-org-name" required>
             </div>
             <div class="form-line">
 
               <label for="early-access-request-form-approx-users">Примерное количество пользователей</label>
-              <select id="early-access-request-form-approx-users" required>
+              <select name="approxUsers" id="early-access-request-form-approx-users" required>
                 <option disabled selected value></option>
                 <option value="2">2 человека</option>
                 <option value="6">3-6 человек</option>
@@ -551,7 +554,7 @@
             <div class="form-line">
 
               <label for="early-access-request-form-email">E-mail для обратной связи</label>
-              <input type="email" required id="early-access-request-form-email">
+              <input name="email" type="email" required id="early-access-request-form-email">
             </div>
             <div class="form-line">
 
@@ -625,7 +628,12 @@
     </div>
   </body>
   <script>
-
+    grecaptcha.ready(function() {
+    grecaptcha.execute('6LdCz-cUAAAAALA91LtBZNI8CJYGwGvMa2hUBMgb', {action: 'init'})
+    .then(function(token) {
+      document.getElementById('recapcha-token').value = token;
+    });
+    });
 
     const egg = new Egg();
 

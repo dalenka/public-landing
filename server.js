@@ -11,39 +11,44 @@ const httpPort = parseInt(process.env.PORT, 10) || 80;
 const httpsPort = parseInt(process.env.PORT, 10) || 7777;
 app.set('port', httpsPort);
 
-//// Create HTTPS server.
+//// Create HTTP/HTTPS server.
 const fs = require('fs');
 
 const options = {
-  key: fs.readFileSync('cert/key.pem'),
-  cert: fs.readFileSync('cert/cert.pem')
+  // key: fs.readFileSync('cert/key.pem'),
+  // cert: fs.readFileSync('cert/cert.pem')
 };
-const httpServer = https.createServer(app);
+
+const httpServer = http.createServer(app);
 const httpsServer = https.createServer(options, app);
 
 //// Listen on provided port, on all network interfaces.
 
-// httpServer.listen(httpPort);
-// httpServer.on('error', onError);
-// httpServer.on('listening', onListening);
+httpServer.listen(httpPort);
+httpServer.on('error', (error) => { onError(httpServer, httpPort, error); });
+httpServer.on('listening', () => { onListening(httpServer, httpPort); });
 
 httpsServer.listen(httpsPort);
-httpsServer.on('error', onError);
-httpsServer.on('listening', onListening);
+httpsServer.on('error', (error) => { onError(httpsServer, httpsPort, error); });
+httpsServer.on('listening', () => { onListening(httpsServer, httpsPort); });
+
 //// Used in logging
+function portToBindName(port) {
+  const bindName = (typeof port === 'string')
+  ? 'pipe ' + port
+  : 'port ' + port;
+  return bindName;
+}
 
-const bindName = (typeof httpsPort === 'string')
-  ? 'pipe ' + httpsPort
-  : 'port ' + httpsPort;
 
-//// Event listener for HTTPS server "error" event.
-
-function onError(error) {
+//// Event listener for HTTP/HTTPS server "error" event.
+function onError(server, port, error) {
   if (error.syscall !== 'listen') {
     throw error;
   }
 
   // handle specific listen errors with friendly messages
+  const bindName = portToBindName(port);
   switch (error.code) {
     case 'EACCES':
       console.error(bindName + ' requires elevated privileges');
@@ -58,9 +63,10 @@ function onError(error) {
   }
 }
 
-//// Event listener for HTTPS server "listening" event.
+//// Event listener for HTTP/HTTPS server "listening" event.
 
-function onListening() {
-  const addr = httpsServer.address().address;
+function onListening(server, port) {
+  const addr = server.address().address;
+  const bindName = portToBindName(port);
   console.log('Listening ' + bindName + ' on ' + addr);
 }
