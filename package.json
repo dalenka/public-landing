@@ -13,7 +13,9 @@
   "author": "Konstantin Barkalov <mail@barkalov.ru>",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "express-es6-template-engine": "^2.2.1"
+    "express-es6-template-engine": "^2.2.1",
+    "sqlite3": "^4.1.1"
   }
 }
