@@ -1,16 +1,16 @@
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./db.sqlite3');
+const db = new sqlite3.Database('./db/db.sqlite3');
 
 class EarlyAccessRequestSaver {
   constructor() {
     db.run('CREATE TABLE IF NOT EXISTS early_access_request (' +
-    'id INTEGER PRIMARY KEY AUTOINCREMENT);');
-    'inn TEXT, '
-    'orgName TEXT, '
-    'approxUsers TEXT, '
-    'email TEXT, '
-    'recapchaScore TEXT, '
-    ');';
+    'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+    'inn TEXT, ' +
+    'orgName TEXT, ' +
+    'approxUsers TEXT, ' +
+    'email TEXT, ' +
+    'recapchaScore TEXT' +
+    ');');
   }
   appendEarlyAccessRequest({
     inn,

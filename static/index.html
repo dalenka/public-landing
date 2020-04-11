@@ -223,6 +223,7 @@
         font-size: 16px;
         margin: 16px 0;
         flex-grow: 1;
+        border-bottom: 4px solid;
       }
       .remark.primary {
         color:rgb(27, 67, 110);
@@ -235,9 +236,6 @@
       .early-access-request-form {
         display: flex;
         flex-direction: column;
-      }
-      .early-access-request-form input, .early-access-request-form select, .early-access-request-form button {
-
       }
       .hero__stripe {
         background: rgb(158, 0, 0);
@@ -632,21 +630,24 @@
     </div>
   </body>
   <script>
-    grecaptcha.ready(function() {
-    grecaptcha.execute('6LdCz-cUAAAAALA91LtBZNI8CJYGwGvMa2hUBMgb', {action: 'init'})
-    .then(function(token) {
-      document.getElementById('recapcha-token').value = token;
-    });
-    });
-
     const egg = new Egg();
 
     const earlyAccessRequestDom = document.getElementsByClassName('early-access-request')[0];
+    const earlyAccessRequestFormDom = document.getElementsByClassName('early-access-request-form')[0];
+    const earlyAccessRequestRecapchaInputDom = document.getElementById('recapcha-token');
     const earlyAccessRequestShowFormButtonDom = document.getElementsByClassName('early-access-request-show-form-button')[0];
+
     earlyAccessRequestShowFormButtonDom.onclick = () => {
       earlyAccessRequestDom.classList.add('early-access-request--show');
       earlyAccessRequestDom.scrollIntoView({
         behavior: 'smooth'
+      });
+    }
+    earlyAccessRequestFormDom.onsubmit = (e) => {
+      e.preventDefault();
+      grecaptcha.execute('6LdCz-cUAAAAALA91LtBZNI8CJYGwGvMa2hUBMgb', {action: 'init'}).then(function(token) {
+        earlyAccessRequestRecapchaInputDom.value = token;
+        earlyAccessRequestFormDom.submit();
       });
     }
 

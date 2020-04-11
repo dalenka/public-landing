@@ -4,12 +4,14 @@ const express = require('express');
 const es6Renderer = require('express-es6-template-engine');
 const router = require('./router.js');
 const app = express();
-
+const bodyParser = require('body-parser');
 // view engine setup
 
 app.engine('html', es6Renderer);
 app.set('views', 'views');
 app.set('view engine', 'html');
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 app.use('/', router); // To be used later, now empty bloilerplate
 app.use(express.static(path.join(__dirname, 'static')));
 
